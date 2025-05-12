@@ -1,3 +1,8 @@
+//Nguyễn Thái Phiên_21146495
+//Phạm Đức Thái_21146151
+//Nguyễn Thành Nhân_21146492 
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -6,10 +11,10 @@
 #include <errno.h>
 #include <time.h>
 
-// �u?ng d?n thi?t b? character driver
+// Ðường dẫn thiết bị character driver
 #define DEVICE_PATH "/dev/bmp180"
 
-// M� ioctl
+// Mã ioctl
 #define BMP180_IOCTL_MAGIC 'b'
 #define BMP180_IOCTL_GET_TEMP     _IOR(BMP180_IOCTL_MAGIC, 1, int)
 #define BMP180_IOCTL_GET_PRESSURE _IOR(BMP180_IOCTL_MAGIC, 2, int)
