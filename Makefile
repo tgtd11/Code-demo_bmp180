@@ -1,11 +1,9 @@
-# Makefile
-
 ifneq ($(KERNELRELEASE),)
-# Khi du?c g?i t? kernel
+# Khi duoc goi tu kernel
 obj-m := bmp180_driver.o bmp180_ioctl.o
 
 else
-# Khi g?i t? user (terminal)
+# Khi goi tu user (terminal)
 
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
