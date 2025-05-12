@@ -1,3 +1,7 @@
+//Nguyễn Thái Phiên_21146495
+//Phạm Đức Thái_21146151
+//Nguyễn Thành Nhân_21146492 
+
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -9,12 +13,12 @@
 #include <linux/delay.h>
 
 
-// T�n thi?t b? v� l?p
+// Tên thiết bị và lớp
 #define DEVICE_NAME "bmp180"
 #define CLASS_NAME  "bmp180_class"
 
 
-// M� ioctl
+// Mã ioctl
 #define BMP180_IOCTL_MAGIC 'b'
 #define BMP180_IOCTL_GET_TEMP     _IOR(BMP180_IOCTL_MAGIC, 1, int)
 #define BMP180_IOCTL_GET_PRESSURE _IOR(BMP180_IOCTL_MAGIC, 2, int)
@@ -28,7 +32,7 @@
 #define BMP180_CMD_PRESSURE      0x34
 
 
-// D�ng c�c bi?n du?c export t? driver ch�nh
+// Dùng các biến được export từ driver chính
 extern struct i2c_client *bmp180_client;
 extern struct bmp180_calib_param {
     int16_t ac1, ac2, ac3;
@@ -37,13 +41,13 @@ extern struct bmp180_calib_param {
 } calib;
 
 
-// Bi?n di?u khi?n char device
+// Biến điều khiển char device
 static int major_number;
 static struct class *bmp180_class = NULL;
 static struct device *bmp180_device = NULL;
 
 
-// t�nh to�n nhi?t d?
+// tính toán nhiệt độ
 static int bmp180_read_temperature(void)
 {
     int ut, x1, x2, b5, temp;
@@ -71,7 +75,7 @@ static int bmp180_read_temperature(void)
     ut = (msb << 8) | lsb;
     printk(KERN_DEBUG "Raw temperature: ut=%d\n", ut);
 
-    /* Temperature compensation (unit: 0.1�C) */
+    /* Temperature compensation (unit: 0.1°C) */
     x1 = ((ut - calib.ac6) * calib.ac5) >> 15;
     if (x1 + calib.md == 0) {
         printk(KERN_ERR "Division by zero in temperature calculation\n");
@@ -87,7 +91,7 @@ static int bmp180_read_temperature(void)
 }
 
 
-// t�nh to�n �p su?t
+// tính toán áp suất
 static int bmp180_read_pressure(void)
 {
     int ut, up, x1, x2, x3, b3, b5, b6, b7, p;
@@ -204,7 +208,7 @@ static int bmp180_release(struct inode *inodep, struct file *filep)
 }
 
 
-// �ang k� file operations
+// Ðang ký file operations
 static struct file_operations fops = {
     .owner = THIS_MODULE,
     .unlocked_ioctl = bmp180_ioctl,
@@ -212,14 +216,14 @@ static struct file_operations fops = {
     .release = bmp180_release,
 };
 
-// H�m kh?i t?o module ioctl
+// Hàm kh?i t?o module ioctl
 static int __init bmp180_ioctl_init(void)
 {
     if (!bmp180_client) {
         printk(KERN_ERR "BMP180 driver not loaded or client not initialized\n");
         return -ENODEV;
     }
-// �ang k� char device v� t?o file /dev/bmp180
+// Ðang ký char device và t?o file /dev/bmp180
     major_number = register_chrdev(0, DEVICE_NAME, &fops);
     if (major_number < 0) {
         printk(KERN_ERR "Failed to register char device: %d\n", major_number);
@@ -242,7 +246,7 @@ static int __init bmp180_ioctl_init(void)
     printk(KERN_INFO "BMP180 ioctl module loaded\n");
     return 0;
 }
-// H�m g? module
+// Hàm gỡ module
 static void __exit bmp180_ioctl_exit(void)
 {
     device_destroy(bmp180_class, MKDEV(major_number, 0));
