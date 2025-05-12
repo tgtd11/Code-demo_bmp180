@@ -43,7 +43,7 @@ sudo rmmod bmp180_ioctl
 sudo rmmod bmp180_driver
 
 
-Giải thích các file
+Giải thích các file:
 bmp180_driver.c: 
 - Module chính giao tiếp với cảm biến qua I2C
 - Đọc các tham số hiệu chuẩn từ cảm biến
